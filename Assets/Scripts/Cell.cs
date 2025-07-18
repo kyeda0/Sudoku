@@ -7,7 +7,10 @@ public class Cell : MonoBehaviour
     [SerializeField] private int _col;
     [SerializeField] private Text _numberText;
     [SerializeField] private Image _background;
-
+    private bool _isError;
+    public int Row => _row;
+    public int Col => _col;
+    
     private bool _isEditor = true;
 
 
@@ -19,22 +22,34 @@ public class Cell : MonoBehaviour
     }
     public void SetValue(int value, bool editor)
     {
-        value = Random.Range(0,9);
         _isEditor = editor;
-        _numberText.text = value == 0 ? "0" : value.ToString();
-        _numberText.color = editor ? Color.black : Color.gray;
+        _numberText.text = value == 0 ? "" : value.ToString();
+        _numberText.color = Color.black;
     }
 
-    public void HihgLight( bool _active)
+    public void HightLight( bool _active, Color _color)
     {
-        _background.color = _active ? new Color(1f,1f,0,8f) : Color.white;
+        if (_isError) return;
+        _background.color = _active  ? _color : Color.white;
     }
 
+    public void SetErrorHightLight(bool _active)
+    {
+        _isError = _active;
+        if (_active)
+        {
+            _background.color = Color.red;
+        }
+        else
+        {
+            _background.color = Color.white;
+        }
+    }
 
     public void OnClick()
     {
-        if(!_isEditor) return;
-        
-        GameManager._instance.SelectCell(this);
+        if(!_isEditor) {return;}
+        if(GameManager._instance != null)
+            GameManager._instance.SelectCell(this);
     } 
 }
