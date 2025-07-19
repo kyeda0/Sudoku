@@ -12,12 +12,7 @@ public class SpawnCellsGeneration : MonoBehaviour
   {
     _gridParent = gameObject.GetComponent<Transform>().transform;
   }
-  private void Start()
-  {
-    GenerationCell();
-  }
-  
-  private void GenerationCell()
+  public void Init()
   {
     for (int i = 0;  i < _g * _g; i++)
     {
@@ -31,5 +26,10 @@ public class SpawnCellsGeneration : MonoBehaviour
         cell.SetValue(0,true);
         _cells[row,col] = cell;
     }
+  }
+  
+  public Cell GetCell(int _row, int _col)
+  {
+    return _cells[_row, _col];
   }
 }

@@ -36,20 +36,20 @@ public class Cell : MonoBehaviour
     public void SetErrorHightLight(bool _active)
     {
         _isError = _active;
-        if (_active)
-        {
-            _background.color = Color.red;
-        }
-        else
-        {
-            _background.color = Color.white;
-        }
+        _background.color = _active ? Color.red : Color.white;
     }
 
     public void OnClick()
     {
-        if(!_isEditor) {return;}
-        if(GameManager._instance != null)
+        Debug.Log("Нажал");
+        if (!_isEditor)
+        {
+            return;
+        }
+        Debug.Log("Нажал 2");
+        if (GameManager._instance != null)
+        {
             GameManager._instance.SelectCell(this);
+        }
     } 
 }

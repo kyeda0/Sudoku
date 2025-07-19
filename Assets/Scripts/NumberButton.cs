@@ -8,6 +8,6 @@ public class NumberButton : MonoBehaviour
     public void OnClick()
     {
         if(GameManager._instance !=null)
-            GameManager._instance.SetNumberToSelctCell(number);
+            GameManager._instance.SetNumberToSelectCell(number);
     }
 }

@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance;
     [SerializeField] private NumberPanelController _numberPanelController;
+    [SerializeField] private SpawnCellsGeneration _spawnCellsGeneration;
     private Cell _selectCell;
     private int[,] _boarder = new int[9,9];
 
@@ -13,6 +18,7 @@ public class GameManager : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
+            Debug.Log("Его нет");
         }
         else
         {
@@ -20,15 +26,87 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SelectCell(Cell _cell)
+    public void InitGame()
     {
+        _spawnCellsGeneration.Init();
+        GenerationSudoku();
+        UpdateCells();
+    }
+    
+    public void SelectCell(Cell _cell)
+    { 
         _selectCell = _cell;
       _selectCell.HightLight(true,Color.azure);
       _numberPanelController.ShowPanel();
     }
 
+    private void GenerationSudoku()
+    {
+       bool _success =  FillBoard(0,0);
 
-    public void SetNumberToSelctCell(int number)
+       if (_success)
+       {
+           RemoveCells(40);
+           UpdateCells();
+       }
+    }
+
+    private bool FillBoard(int _row, int _col)
+    {
+        if (_row == 9)
+            return true;
+        int _nextRow = (_col == 8) ? _row + 1 : _row;
+        int _nextCol = (_col + 1) % 9;
+
+        List<int> _numbers = new List<int>();
+        for (int i = 1; i <= 9; i++)
+        {
+            _numbers.Add(i);
+        }
+
+        Shuffle(_numbers);
+        foreach (int _num in _numbers)
+        {
+            if (IsValid(_num, _row, _col))
+            {
+                _boarder[_row, _col] = _num;
+                if (FillBoard(_nextRow, _nextCol))
+                {
+                    return true;
+                }
+
+                _boarder[_row, _col] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    private void Shuffle(List<int> _list)
+    {
+        for (int i = 0; i < _list.Count; i++)
+        {
+            int j = Random.Range(i, _list.Count);
+            (_list[i], _list[j]) = (_list[j], _list[i]);
+        }
+    }
+
+    private void UpdateCells()
+    {
+        for (int _row = 0; _row < 9; _row++)
+        {
+            for (int _col = 0; _col < 9; _col++)
+            {
+                var _cell = _spawnCellsGeneration.GetCell(_row, _col);
+                _cell.SetValue(_boarder[_row,_col],false);
+                if (_boarder[_row,_col] == 0)
+                {
+                    _cell.SetValue(_boarder[_row,_col], true);
+                }
+            }
+        }
+    }
+    public void SetNumberToSelectCell(int number)
     {
         if (_selectCell != null)
             _selectCell.SetValue(number, true);
@@ -82,5 +160,20 @@ public class GameManager : MonoBehaviour
         }
         
         return true;
+    }
+
+    private void RemoveCells(int _countToRemove)
+    {
+        int _removed = 0;
+        while (_removed < _countToRemove)
+        {
+            int _row = Random.Range(0, 9);
+            int _col = Random.Range(0, 9);
+            if (_boarder[_row, _col] == 0)
+                continue;
+
+            _boarder[_row, _col] = 0;
+            _removed++;
+        }
     }
 }
