@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         {
             case true:
                 _numberPanelController.ShowPanel();
-                _selectCell.HightLight(true,Color.blue);
+                _selectCell.HightLight(true,Color.cyan);
                 break;
             case false:
                 _numberPanelController.HidePanel();
