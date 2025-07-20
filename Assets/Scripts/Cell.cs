@@ -8,11 +8,11 @@ public class Cell : MonoBehaviour
     [SerializeField] private Text _numberText;
     [SerializeField] private Image _background;
     private bool _isError;
+    private bool _isEditor = true;
+    private  bool _active;
     public int Row => _row;
     public int Col => _col;
-    
-    private bool _isEditor = true;
-
+    public bool IsEditor => _isEditor;
 
 
     public void SetPosition(int _r, int _c)
@@ -27,10 +27,9 @@ public class Cell : MonoBehaviour
         _numberText.color = Color.black;
     }
 
-    public void HightLight( bool _active, Color _color)
+    public void HightLight( bool active, Color _color)
     {
-        if (_isError) return;
-        _background.color = _active  ? _color : Color.white;
+        _background.color = active  ? _color : Color.white;
     }
 
     public void SetErrorHightLight(bool _active)
@@ -41,12 +40,6 @@ public class Cell : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log("Нажал");
-        if (!_isEditor)
-        {
-            return;
-        }
-        Debug.Log("Нажал 2");
         if (GameManager._instance != null)
         {
             GameManager._instance.SelectCell(this);

@@ -5,7 +5,6 @@ public class NumberPanelController : MonoBehaviour
 {
     [SerializeField] private RectTransform _panel;
     [SerializeField] private float _animationDuration = 0.3f;
-
     private Vector2 _hiddenPos;
     private Vector2 _showPos;
     private Coroutine _currentAnimation;

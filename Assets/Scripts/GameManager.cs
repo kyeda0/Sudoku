@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-            Debug.Log("Его нет");
         }
         else
         {
@@ -34,10 +33,23 @@ public class GameManager : MonoBehaviour
     }
     
     public void SelectCell(Cell _cell)
-    { 
+    {
+        if (_selectCell != null && _selectCell != _cell)
+        {
+            _selectCell.HightLight(false, Color.white);
+        }
         _selectCell = _cell;
-      _selectCell.HightLight(true,Color.azure);
-      _numberPanelController.ShowPanel();
+        switch (_selectCell.IsEditor)
+        {
+            case true:
+                _numberPanelController.ShowPanel();
+                _selectCell.HightLight(true,Color.blue);
+                break;
+            case false:
+                _numberPanelController.HidePanel();
+                _selectCell.HightLight(false, Color.white);
+                break;
+        }
     }
 
     private void GenerationSudoku()

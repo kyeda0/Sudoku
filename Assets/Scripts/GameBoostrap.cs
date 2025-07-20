@@ -9,7 +9,6 @@ public class GameBoostrap : MonoBehaviour
     private void Awake()
     {
         _gameManager.InitGame();
-        Debug.Log("Запуск");
-
+        Debug.Log("Запустил");
     }
 }
