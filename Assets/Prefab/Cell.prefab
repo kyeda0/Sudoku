@@ -150,6 +150,7 @@ MonoBehaviour:
   _col: 0
   _numberText: {fileID: 4675850796824160546}
   _background: {fileID: 8919407437442713396}
+  _scaleCell: 1.1
 --- !u!1 &9145306214504654530
 GameObject:
   m_ObjectHideFlags: 0

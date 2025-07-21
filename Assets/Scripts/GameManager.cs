@@ -34,16 +34,18 @@ public class GameManager : MonoBehaviour
     
     public void SelectCell(Cell _cell)
     {
+
         if (_selectCell != null && _selectCell != _cell)
         {
-            _selectCell.HightLight(false, Color.white);
+            if(_selectCell.IsEditor)
+                _selectCell.HightLight(false,Color.white);
         }
         _selectCell = _cell;
         switch (_selectCell.IsEditor)
         {
             case true:
                 _numberPanelController.ShowPanel();
-                _selectCell.HightLight(true,Color.cyan);
+                _selectCell.HightLight(true, Color.cyan);
                 break;
             case false:
                 _numberPanelController.HidePanel();
@@ -130,12 +132,13 @@ public class GameManager : MonoBehaviour
         {
             _boarder[_row, _col] = number;
             _selectCell.SetValue(number,true);
-            _selectCell.SetErrorHightLight(false);
+            _selectCell.HightLight(true,Color.white);
+           Debug.Log("Попал");
         }
         else
         {
             _selectCell.SetValue(number,true);
-            _selectCell.SetErrorHightLight(true);
+            _selectCell.HightLight(true,Color.red);
         }
     }
 
